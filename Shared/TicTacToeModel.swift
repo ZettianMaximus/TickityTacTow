@@ -10,6 +10,9 @@ import SwiftUI
 
 class TicTacToeModel : ObservableObject {
     @Published var squares = [Square]()
+    @Published var toggleAIvar : Bool = true
+    @Published var homeTurn : Bool = true
+    
     
     init() {
         for _ in 0...8 {
@@ -21,6 +24,7 @@ class TicTacToeModel : ObservableObject {
         for i in 0...8 {
             squares[i].squareStatus = .empty
         }
+        homeTurn = true
     }
     
     var gameOver : (SquareStatus, Bool) {
@@ -87,14 +91,48 @@ class TicTacToeModel : ObservableObject {
         }
     }
     
-    func makeMove(index: Int, player: SquareStatus) -> Bool {
-        if squares[index].squareStatus == .empty {
+    func toggleAI() {
+        if toggleAIvar == true
+        {
+            toggleAIvar = false
+            resetGame()
+        }
+        else
+        {
+            toggleAIvar = true
+            resetGame()
+        }
+    }
+    
+    func allowTurnChange() {
+        if toggleAIvar == false {
+            if homeTurn == true {
+                homeTurn = false
+            } else {
+                homeTurn = true
+            }
+        }
+    }
+    
+    func makeMove(index: Int, player: SquareStatus) -> Bool
+    {
+        if squares[index].squareStatus == .empty
+        {  //is the square empty?
             squares[index].squareStatus = player
-            if player == .home {
-                moveAI()
+            if toggleAIvar == true
+            {
+                if player == .home
+                {
+                    moveAI()
+                }
+            }
+            else
+            {
+                //allowTurnChange()
             }
             return true
         }
+        allowTurnChange()
         return false
     }
     

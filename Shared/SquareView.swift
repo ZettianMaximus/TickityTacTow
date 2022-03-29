@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 enum SquareStatus {
-    case empty
-    case home
-    case visitor
+    case empty // inactive square
+    case home //
+    case visitor //
 }
 
 class Square : ObservableObject {
@@ -23,7 +23,7 @@ class Square : ObservableObject {
 }
 
 struct SquareView : View {
-    @ObservedObject var dataSource : Square
+    @ObservedObject var dataSource : Square  // holds the status of square
     var action: () -> Void
     var body: some View {
         Button(action: {
@@ -34,7 +34,7 @@ struct SquareView : View {
                 .font(.largeTitle)
                 .bold()
                 .foregroundColor(.black)
-                .frame(width: 70, height: 70, alignment: .center)
+                .frame(maxWidth: 90, maxHeight: 90, alignment: .center)
                 .background(Color.gray.opacity(0.3).cornerRadius(10))
                 .padding(4)
         })
